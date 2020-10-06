@@ -4,6 +4,12 @@ import time
 
 class CustomGui():
     def __init__(self, size_window, fg_color, bg_color, results_color, generation_func):
+
+        self.initialize_widgets(size_window, fg_color, bg_color, results_color)
+        self.initialize_attributes(generation_func)
+        self.pack_widgets()
+
+    def initialize_widgets(self, size_window, fg_color, bg_color, results_color):
         self.my_window = Tk()
         self.my_window.title("Typing skills")
         self.my_window.geometry(size_window)
@@ -29,12 +35,12 @@ class CustomGui():
         self.label_results = Label(self.my_window, text='', bg=bg_color, fg=results_color,
                                    justify='left', height=2, width=100, font="none 20 bold")
 
+    def initialize_attributes(self, generation_func):
         self.first_key = True
         self.start_time = 0
         self.elapsed_time = 0
         self.generation_func = generation_func
         self.random_sent = self.generation_func()
-        self.pack_widgets()
 
     def pack_widgets(self):
         self.label1.pack()
@@ -67,7 +73,8 @@ class CustomGui():
         user_sent = self.user_entry.get()
         accuracy, wpm = self.compare_sentences(self.random_sent, user_sent, self.elapsed_time)
 
-        self.label_results['text'] = f'Results: Accuracy: {accuracy * 100}% Time elapsed: {self.elapsed_time}s. Wpm: {wpm} '
+        self.label_results[
+            'text'] = f'Results: Accuracy: {accuracy * 100}% Time elapsed: {self.elapsed_time}s. Wpm: {wpm} '
         self.first_key = True
         self.random_sent = self.generation_func()
 
@@ -94,4 +101,3 @@ class CustomGui():
 
     def show(self):
         self.my_window.mainloop()
-
